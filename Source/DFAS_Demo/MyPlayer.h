@@ -28,7 +28,12 @@ public:
 
 	// Declaraciones de funciones miembro para movimiento.
 	void MoveForward(float amount);
+	void MoveBackward(float amount);
 	void MoveRight(float amount);
+	void MoveLeft(float amount);
+
+	void Yaw(float amount);
+	void Pitch(float amount);
 
 };
 

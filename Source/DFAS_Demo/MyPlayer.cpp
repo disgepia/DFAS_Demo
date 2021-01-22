@@ -34,7 +34,12 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	// This para indicar que la función se ejecuta desde el objeto que la llame.
 	// 3er parámetro - pasar la llamada a las funciones de la clase AMyPlayer definidas en header
 	PlayerInputComponent->BindAxis("Forward", this, &AMyPlayer::MoveForward);
+	PlayerInputComponent->BindAxis("Backward", this, &AMyPlayer::MoveBackward);
 	PlayerInputComponent->BindAxis("Right", this, &AMyPlayer::MoveRight);
+	PlayerInputComponent->BindAxis("Left", this, &AMyPlayer::MoveLeft);
+
+	PlayerInputComponent->BindAxis("Yaw", this, &AMyPlayer::Yaw);
+	PlayerInputComponent->BindAxis("Pitch", this, &AMyPlayer::Pitch);
 }
 
 void AMyPlayer::MoveForward(float amount) {
@@ -47,14 +52,39 @@ void AMyPlayer::MoveForward(float amount) {
 		AddMovementInput(fwd, amount);
 	}
 }
+void AMyPlayer::MoveBackward(float amount) {
+
+	if (Controller && amount) {
+
+		FVector bkw = -GetActorForwardVector();
+		AddMovementInput(bkw, amount);
+	}
+}
 void AMyPlayer::MoveRight(float amount) {
 
 	if (Controller && amount) { 
 
-		FVector rgt = GetActorRightVector();
+		FVector rgt = GetActorRightVector();		
 		AddMovementInput(rgt, amount);
 	}
 }
+void AMyPlayer::MoveLeft(float amount) {
 
+	if (Controller && amount) {
 
+		FVector lft = -GetActorRightVector();
+		AddMovementInput(lft, amount);
+	}
+}
+// Funciones Yaw/Pitch heredadas de APawn.
+// Funcion Getworld heredada de AActor.
+// Función GetDeltaSeconds heredada de UWorld.
+void AMyPlayer::Yaw(float amount) {// Eje X.
+
+	AddControllerYawInput(100.f * amount * GetWorld()->GetDeltaSeconds());
+}
+void AMyPlayer::Pitch(float amount) {// Eje Y.
+
+	AddControllerPitchInput(100.f * amount * GetWorld()->GetDeltaSeconds());
+}
 
