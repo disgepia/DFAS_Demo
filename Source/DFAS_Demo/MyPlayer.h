@@ -2,6 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/InputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "MyPlayer.generated.h"
 
 UCLASS() // Macro primordial - hereda de clase UObject
@@ -13,7 +17,14 @@ class DFAS_DEMO_API AMyPlayer : public ACharacter{ // AMyPlayer, ACharacter - he
 public:
 
 	// Establece valores por defecto para las propiedades del Character.
-	AMyPlayer();
+	AMyPlayer();// Constructor.
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		USpringArmComponent* CameraBoom;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
+		UCameraComponent* FollowCamera;
+
 
 protected:
 	// Llamada al comienzo del juego o en cada spawneo.
@@ -28,13 +39,19 @@ public:
 
 	// Declaraciones de funciones miembro para movimiento.
 	void MoveForward(float amount);
-	void MoveBackward(float amount);
 	void MoveRight(float amount);
-	void MoveLeft(float amount);
 
-	void Yaw(float amount);
-	void Pitch(float amount);
+	//void Yaw(float amount);
+	//void Pitch(float amount);
 
+	//UFUNCTION()
+		//void DoubleJump();
+
+	UPROPERTY()
+		int DoubleJumpCounter;
+
+	UPROPERTY()
+		float JumpHeight;
 };
 
 /* En este archivo HEADER se incluyen las macros, 
