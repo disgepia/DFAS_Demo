@@ -1,8 +1,10 @@
 #include "MyPlayer.h"
 
-//Establecer valores por defecto.
-AMyPlayer::AMyPlayer(){// Constructor.
 
+/***********************************  CONSTRUCTOR  ****************************************/
+AMyPlayer::AMyPlayer(){
+
+	//Establecer valores por defecto.
 	// Activar la llamada a función Tick() en cada frame.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -30,6 +32,7 @@ AMyPlayer::AMyPlayer(){// Constructor.
 	FollowCamera->bUsePawnControlRotation = false;
 
 }
+/***********************************  CONSTRUCTOR  ****************************************/
 
 // Llamada al comienzo del juego o en cada spawneo.
 void AMyPlayer::BeginPlay(){
@@ -37,6 +40,7 @@ void AMyPlayer::BeginPlay(){
 	Super::BeginPlay();
 	
 }
+
 // LLamada cada frame.
 void AMyPlayer::Tick(float DeltaTime){
 
@@ -57,11 +61,13 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Forward", this, &AMyPlayer::MoveForward);
 	PlayerInputComponent->BindAxis("Right", this, &AMyPlayer::MoveRight);
 
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AMyPlayer::DoubleJump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	PlayerInputComponent->BindAxis("Yaw", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Pitch", this, &APawn::AddControllerPitchInput);
+
+	JumpHeight = 600.f;
 }
 
 void AMyPlayer::MoveForward(float amount) {
@@ -94,22 +100,16 @@ void AMyPlayer::MoveRight(float amount) {
 	}
 }
 
-// Funciones Yaw/Pitch heredadas de APawn.
-// Funcion Getworld heredada de AActor.
-// Función GetDeltaSeconds heredada de UWorld.
-/*void AMyPlayer::Yaw(float amount) {// Eje X.
-	AddControllerYawInput(100.f * amount * GetWorld()->GetDeltaSeconds());
+void AMyPlayer::DoubleJump(){
+
+	if (DoubleJumpCounter <= 1) {
+		ACharacter::LaunchCharacter(FVector(0,0, JumpHeight), false, true);
+		DoubleJumpCounter++;
+	}
 }
 
-void AMyPlayer::Pitch(float amount) {// Eje Y.
+void AMyPlayer::Landed(const FHitResult& Hit) {
+	DoubleJumpCounter = 0;
+}
 
-	AddControllerPitchInput(100.f * amount * GetWorld()->GetDeltaSeconds());
-}*/
-
-/*void AMyPlayer::DoubleJump() {
-
-	if(DoubleJumpCounter <= 1)
-	{
-		AMyPlayer::LaunchCharacter(FVector(0, 0, 1));
-	}*/
 

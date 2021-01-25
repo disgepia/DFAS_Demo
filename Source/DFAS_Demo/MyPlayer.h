@@ -30,6 +30,9 @@ protected:
 	// Llamada al comienzo del juego o en cada spawneo.
 	virtual void BeginPlay() override;
 
+	// Función Landed en Character.h
+	virtual void Landed(const FHitResult& Hit) override;
+
 public:	
 	// LLamada cada frame.
 	virtual void Tick(float DeltaTime) override;
@@ -41,17 +44,15 @@ public:
 	void MoveForward(float amount);
 	void MoveRight(float amount);
 
-	//void Yaw(float amount);
-	//void Pitch(float amount);
-
-	//UFUNCTION()
-		//void DoubleJump();
+	UFUNCTION()
+		void DoubleJump();
 
 	UPROPERTY()
 		int DoubleJumpCounter;
 
-	UPROPERTY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float JumpHeight;
+
 };
 
 /* En este archivo HEADER se incluyen las macros, 
