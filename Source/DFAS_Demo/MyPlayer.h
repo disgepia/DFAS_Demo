@@ -8,6 +8,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "MyPlayer.generated.h"
 
+
+
 UCLASS() // Macro primordial - hereda de clase UObject
 
 class DFAS_DEMO_API AMyPlayer : public ACharacter{ // AMyPlayer, ACharacter - heredan de clase AActor
@@ -46,12 +48,41 @@ public:
 
 	UFUNCTION()
 		void DoubleJump();
-
 	UPROPERTY()
-		int DoubleJumpCounter;
-
+		int DoubleJumpCounter; // Para el número de saltos que podrá realizar.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float JumpHeight;
+		float JumpHeight;   // Para la altura de dichos saLtos.
+
+
+	UFUNCTION()
+		void Walk();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Walkingspeed;
+
+	UFUNCTION()
+		void Sprint();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float Runningspeed;
+
+
+	UFUNCTION()
+		void Dash();
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DashDistance;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DashCooldown;
+	UPROPERTY()
+		bool CanDash;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		float DashStop;
+
+	UFUNCTION()
+		void StopDashing();
+	UPROPERTY()
+		FTimerHandle Unused;
+
+	UFUNCTION()
+		void ResetDash();
 
 };
 
