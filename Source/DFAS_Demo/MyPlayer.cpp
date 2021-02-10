@@ -17,9 +17,10 @@ AMyPlayer::AMyPlayer(){
 	// Rotar al personaje hacia la dirección en la que se está moviendo.
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 900.0f, 0.0f); // X,Y,Z
-	GetCharacterMovement()->JumpZVelocity = 500.f;
+	GetCharacterMovement()->JumpZVelocity = 700.f;
+	GetCharacterMovement()->GravityScale = 2.5f;
 	// Qué tanto se puede controlar al personaje mientras está en el aire.
-	GetCharacterMovement()->AirControl = .0f; 
+	GetCharacterMovement()->AirControl = .5f; 
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(RootComponent); // Se enlaza a CapsuleComponent en BP_MyPlayer
@@ -74,13 +75,13 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Yaw", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Pitch", this, &APawn::AddControllerPitchInput);
 
-	JumpHeight = 450.f;
+	JumpHeight = 850.f; // Para el salto inicial.
 
 	Walkingspeed = 420.f;
 	Runningspeed = 1000.f;
 
-	DashDistance = 6000.f;
-	DashCooldown = 1.f;
+	DashDistance = 4000.f;
+	DashCooldown = .5f;
 	CanDash = true;
 	DashStop = 0.1f;
 }
@@ -124,12 +125,18 @@ void AMyPlayer::DoubleJump(){
 
 	if (DoubleJumpCounter <= 1) {
 		ACharacter::LaunchCharacter(FVector(0,0, JumpHeight), false, true);
-		DoubleJumpCounter++;
+		DoubleJumpCounter++;		
 	}
+	JumpHeight = 800.f; // Para el salto doble.
+	//GetCharacterMovement()->GravityScale = 2.5f;
+	
 }
 
 void AMyPlayer::Landed(const FHitResult& Hit) {
 	DoubleJumpCounter = 0;
+	JumpHeight = 850.f; // Para el salto inicial.
+	//GetCharacterMovement()->GravityScale = 0.5f;
+	//Runningspeed = 1000.f;
 }
 
 void AMyPlayer::Sprint() {
